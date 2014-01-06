@@ -815,23 +815,25 @@ var Gmail =  function() {
     var page = api.get.current_page();
     var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=0&num=120&rt=1';
 
-    if(page.indexOf('label/') == 0) {
-      url += '&cat=' + page.split('/')[1] +'&search=cat';
-    } else if(page.indexOf('category/') == 0) {
-      if(page.indexOf('forums') != -1) {
-        cat_label = 'group';
-      } else if(page.indexOf('updates') != -1) {
-        cat_label = 'notification';
-      } else if(page.indexOf('promotion') != -1) {
-        cat_label = 'promo';
-      } else if(page.indexOf('social') != -1) {
-        cat_label = 'social';
+    if(page != null){
+      if(page.indexOf('label/') == 0) {
+        url += '&cat=' + page.split('/')[1] +'&search=cat';
+      } else if(page.indexOf('category/') == 0) {
+        if(page.indexOf('forums') != -1) {
+          cat_label = 'group';
+        } else if(page.indexOf('updates') != -1) {
+          cat_label = 'notification';
+        } else if(page.indexOf('promotion') != -1) {
+          cat_label = 'promo';
+        } else if(page.indexOf('social') != -1) {
+          cat_label = 'social';
+        }
+        url += '&cat=^smartlabel_' + cat_label +'&search=category';
+      } else if(page.indexOf('search/') == 0) {
+        url += '&qs=true&q=' + page.split('/')[1] +'&search=query';
+      } else {
+        url += '&search=' + page;
       }
-      url += '&cat=^smartlabel_' + cat_label +'&search=category';
-    } else if(page.indexOf('search/') == 0) {
-      url += '&qs=true&q=' + page.split('/')[1] +'&search=query';
-    } else {
-      url += '&search=' + page;
     }
 
     var get_data = api.tools.make_request(url);
@@ -859,10 +861,8 @@ var Gmail =  function() {
 
     var page = null;
 
-    for (var i = pages.length - 1; i >= 0; i--) {
-      if(hash.indexOf(pages[i])){
-        page = hash;
-      }
+    if($.inArray(hash, pages) > -1) {
+      page = hash;
     }
 
     if(hash.indexOf('label/') == 0 || hash.indexOf('category/') == 0 || hash.indexOf('search/') == 0) {
