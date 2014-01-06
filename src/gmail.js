@@ -859,8 +859,10 @@ var Gmail =  function() {
 
     var page = null;
 
-    if($.inArray(hash, pages) > -1) {
-      page = hash;
+    for (var i = pages.length - 1; i >= 0; i--) {
+      if(hash.indexOf(pages[i])){
+        page = hash;
+      }
     }
 
     if(hash.indexOf('label/') == 0 || hash.indexOf('category/') == 0 || hash.indexOf('search/') == 0) {
