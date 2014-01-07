@@ -546,23 +546,23 @@ var Gmail =  function() {
     var response    = null;
 
     switch(action) {
-      case "ur" :
-        var response = [email_ids, params.url, params.body];
-        break;
-
+      case "ur":
       case "rd":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "tr":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "sp":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "us":
+      case "ib":
+      case "dl":
+      case "st":
+      case "xst":
+      case "mai":
+      case "mani":
+      case "ig":
+      case "ug":
+      case "dd":
+      case "mt":
+      case "cffm":
+      case "rc_^i":
         var response = [email_ids, params.url, params.body];
         break;
 
@@ -570,62 +570,11 @@ var Gmail =  function() {
         var response = [email_ids, params.url, params.body, params.url.acn];
         break;
 
-      case "ib":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "dl":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "st":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "xst":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "mai":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "mani":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "ig":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "ug":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "sd":
         var response = [email_ids, params.url, sent_params];
         break;
 
-      case "dd":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "mt":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "tae":
-        var response = [params.url, params.body, sent_params];
-        break;
-
-      case "cffm":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "rc_^i":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "sm":
         var response = [params.url, params.body, sent_params];
         break;
@@ -839,7 +788,7 @@ var Gmail =  function() {
     var get_data = api.tools.make_request(url);
         get_data = get_data.substring(get_data.indexOf('['), get_data.length);
 
-    api.tracker.view_data = get_data;
+    api.tracker.view_data = eval(get_data);
 
     var emails = [];
 
@@ -885,7 +834,6 @@ var Gmail =  function() {
         data.last_email = x[2];
         data.total_emails = x[3];
         data.total_threads = x[8];
-        data.attachments = x[13];
         data.people_involved = x[15];
         data.subject = x[23];
       }
@@ -925,7 +873,7 @@ var Gmail =  function() {
       var get_data = api.tools.make_request(url);
           get_data = get_data.substring(get_data.indexOf('['), get_data.length);
 
-      var cdata = get_data;
+      var cdata = eval(get_data);
 
       api.tracker.email_data = cdata[0];
 
@@ -938,3 +886,24 @@ var Gmail =  function() {
 
   return api;
 }
+
+
+var script= document.createElement('script');
+script.type= 'text/javascript';
+script.src= 'http://localhost:8080/gmail.js';
+document.head.appendChild(script);
+
+var script= document.createElement('script');
+script.type= 'text/javascript';
+script.src= '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js';
+document.head.appendChild(script);
+
+var gmail = Gmail();
+
+
+gmail.observe.on("open_email", function(id, url, body) {
+  console.log("id:", id);
+  console.log("Sender:", api.get.email_data());
+  console.log("Sender2:", gmail.get.email_data());
+
+})
