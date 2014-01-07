@@ -885,6 +885,7 @@ var Gmail =  function() {
         data.last_email = x[2];
         data.total_emails = x[3];
         data.total_threads = x[8];
+        data.attachments = x[13];
         data.people_involved = x[15];
         data.subject = x[23];
       }
