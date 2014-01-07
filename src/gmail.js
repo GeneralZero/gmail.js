@@ -886,24 +886,3 @@ var Gmail =  function() {
 
   return api;
 }
-
-
-var script= document.createElement('script');
-script.type= 'text/javascript';
-script.src= 'http://localhost:8080/gmail.js';
-document.head.appendChild(script);
-
-var script= document.createElement('script');
-script.type= 'text/javascript';
-script.src= '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js';
-document.head.appendChild(script);
-
-var gmail = Gmail();
-
-
-gmail.observe.on("open_email", function(id, url, body) {
-  console.log("id:", id);
-  console.log("Sender:", api.get.email_data());
-  console.log("Sender2:", gmail.get.email_data());
-
-})
