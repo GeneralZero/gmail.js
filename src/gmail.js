@@ -891,7 +891,6 @@ var Gmail =  function() {
   }
 
   api.dom.emailBodyDiv = function() {
-
     if(!Gmail.insideEmail()) {
       return [];
     }
@@ -932,49 +931,6 @@ var Gmail =  function() {
       return finalID.pop();
     }
   }
-
-  api.isPreviewPane = function () {
-    var e = $("div[role=main]:first").find("[gh=tl]");
-    if (e.length > 0) {
-      return e[0].getAttribute("class").indexOf("aia") != -1;
-    }
-    return false;
-  };
-
-  api.insideEmail = function() {
-    if(api.get.current_page() != null && !api.isPreviewPane()) {
-      return false;
-    }
-
-    var items = $('.ii.gt');
-    var ids = [];
-
-    for(var i=0; i<items.length; i++) {
-      var mail_id = items[i].getAttribute('class').split(' ')[2];
-      if(mail_id != 'undefined' && mail_id != undefined) {
-        if($(items[i]).is(':visible')) {
-          ids.push(items[i]);
-        }
-      }
-    }
-
-    return ids.length > 0;
-  }
-
-  api.isThread = function() {
-    var items = api.dom.email_contents();
-    var check_1 = $('.nH .if').children(":eq(1)").children().children(":eq(1)").children();
-    var check_2 = [];
-
-    for(var i=0; i<items.length; i++) {
-      var mail_id = items[i].getAttribute('class').split(' ')[2];
-      if(mail_id != 'undefined' && mail_id != undefined) {
-        check_2.push(mail_id);
-      }
-    }
-
-    return check_1.length > 1 || check_2.length > 1;
-  };
 
   return api;
 }
