@@ -148,6 +148,9 @@ var Gmail =  function() {
     return $('.nH.hx');
   }
 
+  api.dom.email_attachment = function() {
+    return $('.aZo.N5jrZb');
+  }
 
   api.check.is_inside_email = function() {
     if(api.get.current_page() != null && !api.check.is_preview_pane()) {
@@ -867,6 +870,10 @@ var Gmail =  function() {
     if(api.check.is_inside_email() && email_id == undefined) {
       email_id = api.get.email_id();
     }
+    else
+    {
+
+    }
 
     if(email_id != undefined) {
       var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=inbox';
@@ -883,6 +890,91 @@ var Gmail =  function() {
     return {};
   }
 
+  api.dom.emailBodyDiv = function() {
+
+    if(!Gmail.insideEmail()) {
+      return [];
+    }
+
+    if(!Gmail.isPreviewPane()) {
+      var finalID = [];
+      var hashID = window.SignalNS.gmail.get.email_id();
+      var items = window.SignalNS.gmail.dom.email_contents();
+
+      if(Gmail.isThread() && items.length == 1) {
+        return items.pop();
+      }
+
+      for(var i=0; i<items.length; i++) {
+        var mail_id = items[i].getAttribute('class').split(' ')[2];
+        if(mail_id.substring(1) == hashID) {
+          finalID.push(items[i]);
+        }
+      }
+
+      for(var j=0; j<finalID.length; j++) {
+        if($($(finalID[j]).is(':visible'))) {
+          return finalID[j];
+        }
+      }
+
+      return items.pop();
+    } else {
+      var items = window.SignalNS.gmail.dom.email_contents();
+      var finalID = [];
+
+      for(var j=0; j<items.length; j++) {
+        if($($(items[j])).is(':visible')) {
+          finalID.push(items[j]);
+        }
+      }
+
+      return finalID.pop();
+    }
+  }
+
+  api.isPreviewPane = function () {
+    var e = $("div[role=main]:first").find("[gh=tl]");
+    if (e.length > 0) {
+      return e[0].getAttribute("class").indexOf("aia") != -1;
+    }
+    return false;
+  };
+
+  api.insideEmail = function() {
+    if(api.get.current_page() != null && !api.isPreviewPane()) {
+      return false;
+    }
+
+    var items = $('.ii.gt');
+    var ids = [];
+
+    for(var i=0; i<items.length; i++) {
+      var mail_id = items[i].getAttribute('class').split(' ')[2];
+      if(mail_id != 'undefined' && mail_id != undefined) {
+        if($(items[i]).is(':visible')) {
+          ids.push(items[i]);
+        }
+      }
+    }
+
+    return ids.length > 0;
+  }
+
+  api.isThread = function() {
+    var items = api.dom.email_contents();
+    var check_1 = $('.nH .if').children(":eq(1)").children().children(":eq(1)").children();
+    var check_2 = [];
+
+    for(var i=0; i<items.length; i++) {
+      var mail_id = items[i].getAttribute('class').split(' ')[2];
+      if(mail_id != 'undefined' && mail_id != undefined) {
+        check_2.push(mail_id);
+      }
+    }
+
+    return check_1.length > 1 || check_2.length > 1;
+  };
 
   return api;
 }
